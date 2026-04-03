@@ -1,5 +1,6 @@
 package by.java.enterprise.emailnotificationmicroservice.handler;
 
+import by.java.enterprise.core.ProductCreatedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaHandler;

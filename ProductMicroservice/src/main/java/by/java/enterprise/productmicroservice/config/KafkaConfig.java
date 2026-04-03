@@ -1,6 +1,6 @@
 package by.java.enterprise.productmicroservice.config;
 
-import by.java.enterprise.productmicroservice.service.event.ProductCreatedEvent;
+import by.java.enterprise.core.ProductCreatedEvent;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,6 +31,9 @@ public class KafkaConfig {
     @Value("${spring.kafka.producer.properties.delivery.timeout.ms}")
     private String deliveryTimeout;
 
+    @Value("${spring.kafka.producer.properties.request.timeout.ms}")
+    private String requestTimeout;
+
     @Value("${spring.kafka.producer.properties.linger.ms}")
     private String linger;
 
@@ -54,6 +57,7 @@ public class KafkaConfig {
         config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, valueSerializer);
         config.put(ProducerConfig.ACKS_CONFIG, acks);
         config.put(ProducerConfig.DELIVERY_TIMEOUT_MS_CONFIG, deliveryTimeout);
+        config.put(ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG, requestTimeout);
         config.put(ProducerConfig.LINGER_MS_CONFIG, linger);
         config.put(ProducerConfig.RETRIES_CONFIG, retries);
         config.put(ProducerConfig.RETRY_BACKOFF_MS_CONFIG, retryBackoff);

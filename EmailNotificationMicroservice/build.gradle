@@ -20,7 +20,9 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-kafka'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
     implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+    implementation project(':Core')
     testImplementation 'org.springframework.boot:spring-boot-starter-kafka-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
