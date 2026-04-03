@@ -5,12 +5,12 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="ProductNotifier.Core" options="-parameters" />
-      <module name="ProductNotifier.Core.main" options="-parameters" />
-      <module name="ProductNotifier.Core.test" options="-parameters" />
       <module name="ProductNotifier.EmailNotificationMicroservice" options="-parameters" />
       <module name="ProductNotifier.EmailNotificationMicroservice.main" options="-parameters" />
       <module name="ProductNotifier.EmailNotificationMicroservice.test" options="-parameters" />
+      <module name="ProductNotifier.MockService" options="-parameters" />
+      <module name="ProductNotifier.MockService.main" options="-parameters" />
+      <module name="ProductNotifier.MockService.test" options="-parameters" />
       <module name="ProductNotifier.ProductMicroservice" options="-parameters" />
       <module name="ProductNotifier.ProductMicroservice.main" options="-parameters" />
       <module name="ProductNotifier.ProductMicroservice.test" options="-parameters" />

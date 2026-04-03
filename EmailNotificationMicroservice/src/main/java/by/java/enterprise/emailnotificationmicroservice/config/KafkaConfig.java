@@ -1,6 +1,7 @@
 package by.java.enterprise.emailnotificationmicroservice.config;
 
-import com.fasterxml.jackson.databind.JsonSerializer;
+import by.java.enterprise.emailnotificationmicroservice.exception.NonRetryableException;
+import by.java.enterprise.emailnotificationmicroservice.exception.RetryableException;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -14,6 +15,7 @@ import org.springframework.kafka.core.*;
 import org.springframework.kafka.listener.DeadLetterPublishingRecoverer;
 import org.springframework.kafka.listener.DefaultErrorHandler;
 import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer;
+import org.springframework.util.backoff.FixedBackOff;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,7 +44,10 @@ public class KafkaConfig {
     @Bean
     ConcurrentKafkaListenerContainerFactory<String, Object> kafkaListenerContainerFactory(
             ConsumerFactory<String, Object> consumerFactory, KafkaTemplate kafkaTemplate) {
-        DefaultErrorHandler errorHandler = new DefaultErrorHandler(new DeadLetterPublishingRecoverer(kafkaTemplate));
+        DefaultErrorHandler errorHandler = new DefaultErrorHandler(new DeadLetterPublishingRecoverer(kafkaTemplate),
+                new FixedBackOff(3000, 3));
+        errorHandler.addNotRetryableExceptions(NonRetryableException.class);
+        errorHandler.addRetryableExceptions(RetryableException.class);
 
         ConcurrentKafkaListenerContainerFactory<String, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory);
@@ -62,7 +67,8 @@ public class KafkaConfig {
         config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, environment
                 .getProperty("spring.kafka.consumer.bootstrap-servers"));
         config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+        config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
+                "org.springframework.kafka.support.serializer.JsonSerializer");
 
         return new DefaultKafkaProducerFactory<>(config);
     }
